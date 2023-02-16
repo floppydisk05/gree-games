@@ -14,7 +14,9 @@ function getPosts(url) {
       req.on('error', reject);
       req.on('response', function (res) {
         if (res.statusCode !== 200) {
-          return this.emit('error', new Error('Bad status code'));
+          //return this.emit('error', new Error('Bad status code'));
+          console.log('Bad status code ', res.statusCode);
+          return;
         }
         this.pipe(feedparser);
       });
@@ -34,7 +36,7 @@ function isGree(post) {
     return (post.title.includes("FREE") || post.title.includes("100%"))
 }
 
-  const rssUrl = `https://www.reddit.com/${config.subreddit}/.rss`;
+  const rssUrl = `https://www.reddit.com/r/${config.subreddit}/.rss`;
   let previousTitles = [];
   
   setInterval(() => {
@@ -71,5 +73,5 @@ function sendEmbed(post, webhook) {
         embed.setImage(post.image.url)
     
     // Send the embed to the webhook
-    webhook.send({embeds:[embed]});
+    webhook.send({content: '<@&1018473726414700564>', embeds:[embed]});
 }
